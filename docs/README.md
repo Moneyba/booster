@@ -52,8 +52,9 @@
     - [Getting real-time updates for a read model](#getting-real-time-updates-for-a-read-model)
 - [Features](#features)
   - [Authentication and Authorization](#authentication-and-authorization)
-  - [Custom Authentication](#custom-authentication)
-    - [JWT Configuration](#jwt-configuration)
+    - [Authentication Rocket](#authentication-rocket)
+    - [Custom Authentication](#custom-authentication)
+    	- [JWT Configuration](#jwt-configuration)
   - [GraphQL API](#graphql-api)
     - [Relationship between GraphQL operations and commands and read models](#relationship-between-graphql-operations-and-commands-and-read-models)
     - [How to send GraphQL request](#how-to-send-graphql-request)
@@ -1622,7 +1623,7 @@ export class GetProductsCount {
 
 ### Authentication and Authorization
 
-You can use the [Authentication Rocket](https://github.com/boostercloud/rocket-auth-aws-infrastructure) for adding the authentication and authorization to you application. But first, you need to know that authorization in Booster is done through roles. Every Command and ReadModel has an `authorize` policy that tells Booster who can execute or access it. It consists of one of the following two values:
+First of all, you need to know that the authorization in Booster is done through roles. Every Command and ReadModel has an `authorize` policy that tells Booster who can execute or access it. It consists of one of the following two values:
 
 - `'all'`: Meaning that the command is public: any user, both authenticated and anonymous, can execute it.
 - An array of authorized roles `[Role1, Role2, ...]`: This means that only those authenticated users that
@@ -1652,9 +1653,10 @@ export class UpdateUser {
 
 By default, a Booster application has no roles defined, so the only allowed value you can use in the `authorize` policy is `'all'` (good for public APIs).
 If you want to add user authorization, you first need to create the roles that are suitable for your application.
+
 Roles are classes annotated with the `@Role` decorator, where you can specify some attributes. We recommend that you define your roles in the file `src/roles.ts` or, if you have too many roles, put them in several files under the `src/roles` folder.
 
-_Note: There is no `Admin` user by default. In order to register one you need to specify a sign-up method on `src/roles.ts`._
+> _Note: There is no `Admin` user by default. In order to register one you need to specify a sign-up method on `src/roles.ts`._
 
 In the following example we define two roles, `Admin` and `User`:
 
@@ -1696,39 +1698,35 @@ export class SuperUserWithoutConfirmation {}
 
 Here, we have defined the `Admin`, `User`, `SuperUser` and `SuperUserWithoutConfirmation` roles. They all contain an `auth` attribute which contains a `signUpMethods` and `skipConfirmation` attributes.
 
-When `signUpMethods` is empty (`Admin` role) or is not specified, a user can't use this role to sign up.
-`signUpMethods` is an array with limited possible values: `email`, `phone` or a combination of both.
-Users with the `User` role will only be able to sign up with their emails, whereas the ones with the `SuperUser` role will be able to sign up with either their email or their phone number.
+When `signUpMethods` is empty (`Admin` role) or is not specified, a user can't use this role to sign up. `signUpMethods` is an array with limited possible values: `email`, `phone` or a combination of both. Users with the `User` role will only be able to sign up with their emails, whereas the ones with the `SuperUser` role will be able to sign up with either their email or their phone number.
 
-When `skipConfirmation` is false or not specified, a confirmation is required for the chosen sign up method.
-Users that sign up with their emails will receive a confirmation link in their inbox. They just need to click it to confirm their registration.
-Users that sign up with their phones will receive a confirmation code as an SMS message. That code needs to be sent back using the [confirmation endpoint](#sign-up/confirm)
-If `skipConfirmation` is set to true, users can sign in without confirmation after signing up.
+When `skipConfirmation` is false or not specified, a confirmation is required for the chosen sign up method. Users that sign up with their emails will receive a confirmation link in their inbox. They just need to click it to confirm their registration. Users that sign up with their phones will receive a confirmation code as an SMS message. That code needs to be sent back using the [confirmation endpoint](#sign-up/confirm). If `skipConfirmation` is set to true, users can sign in without confirmation after signing up.
 
-Now with the roles defined, your Booster application is ready to use the Authorization Rocket, please check out its [documentation](https://github.com/boostercloud/rocket-auth-aws-infrastructure) for getting the access tokens.
+#### Authentication Rocket
 
-Once a user has an access token, it can be included in any request made to your Booster application as a
-_Bearer_ token. It will be used to get the user information and
-authorize them to access protected resources.
+Now, with the roles defined, your Booster application is ready to use the [AWS Authorization Rocket](https://github.com/boostercloud/rocket-auth-aws-infrastructure), which provides authentication and authorization integration in your application. Check out its [documentation](https://github.com/boostercloud/rocket-auth-aws-infrastructure) to know how you can configure it and how the user can get their access tokens.
+
+Once a user has an access token, it can be included in any request made to your Booster application as a _Bearer_ token. It will be used to get the user information and authorize them to access protected resources.
 
 To learn how to include the access token in your requests, check the section [Authorizing operations](#authorizing-operations).
 
-### Custom Authentication
+#### Custom Authentication
 
-You can use the **JWT authorization mode** to authorize all incoming Booster requests. Your auth server will return JWT tokens
-wich will be decoded internally by Booster, after that, the required roles will be matched with the contained claims
-inside that token.
+Booster provides a **JWT authorization mode** to authorize all incoming Booster requests using the server you decide. Your authentication server will provide JWT tokens that you can use with Booster. Your application will decode your token and verify its validity with your server, and then, the required roles will be matched with the claims contained in the token.
 
-In that way, you can use different auth providers, like Auth0, Firebase, Cognito, create your own or simply use our [Authentication Rocket](https://github.com/boostercloud/rocket-auth-aws-infrastructure), which is our recommended solution that works great with Booster.
+In that way, you can use different authentication providers, like Auth0, Firebase, Cognito, or create your own, without thee need of a specific rocket implementation.
 
-#### JWT Configuration
+Note:
+> The JWT authorization mode does not make use of the `signUpMethods` and `signUpConfirmation` attributes of your roles configuration. This configuration depends on the authentication server you use.
 
-In order to use the JWT authorization you will need to set a `tokenVerifier` property which contains the following properties:
+##### JWT configuration
 
-- jwksUri: Public uri with the public keys the auth server used to sign in the JWT tokens, commonly known as a key sets.
-- issuer: Identifies the principal that issued the JWT tokens.
+In order to use the JWT authorization you will need to set the `tokenVerifier` property of your environment configuration, which has the following attributes:
 
-Auth sample configuration:
+- `jwksUri`: Public URI with the public keys that the auth server used to sign in the JWT tokens, commonly known as the keys sets.
+- `issuer`: Identifies the principal that issued the JWT tokens.
+
+The following example would enable the authorization of those users which keys are issued by an specific Google Cloud Platform application:
 
 ```typescript
 import { Booster } from '@boostercloud/framework-core'
@@ -1738,9 +1736,9 @@ import * as AWS from '@boostercloud/framework-provider-aws'
 Booster.configure('production', (config: BoosterConfig): void => {
   config.appName = 'demoapp'
   config.provider = AWS.Provider
-  config.tokenVerifier = {
-    jwksUri: 'https://demoapp.auth0.com/.well-known/jwks.json',
-    issuer: 'auth0',
+  config.tokenVerifier = { // Token verifier property here! 👈🏻
+    jwksUri: 'https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com',
+    issuer: 'https://securetoken.google.com/demoapp',
   }
 })
 ```
@@ -1756,7 +1754,7 @@ export class UpdateUser {
 }
 ```
 
-Your token should include a property `custom:role` with the value `Admin` or `User`. Here is an example of a Firebase token:
+Your token should include a custom claim `custom:role` with the value role you want to assign (i.e. `Admin` or `User`). Here is an example of a Google Cloud Platform token with the custom claim set:
 
 ```json
 {
@@ -1772,6 +1770,8 @@ Your token should include a property `custom:role` with the value `Admin` or `Us
   firebase: { ... }
 }
 ```
+
+Depending on the service or provider you are using, the process to configure custom claims to a user is different. If you need help looking for a way to set your custom claims, get in touch with the community or create an issue.
 
 Once you have the token with the auth provider of choice, simply pass it in the requests through the header:
 
