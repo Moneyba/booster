@@ -28,7 +28,7 @@ export class EventStore {
 
     // eslint-disable-next-line @typescript-eslint/no-extra-parens
     const lastVisitedTime = snapshotEnvelope?.createdAt || originOfTime
-    // PROBLEM: This method brings all events, even if a date is provided above ("at ?? new Date()" expression)
+
     const pendingEvents = await this.loadEventStreamSince(entityName, entityID, lastVisitedTime)
 
     if (pendingEvents.length <= 0) {

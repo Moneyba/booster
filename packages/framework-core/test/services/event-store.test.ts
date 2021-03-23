@@ -95,7 +95,7 @@ describe('EventStore', () => {
         const eventStore = new EventStore(config, logger) as any
         const someEventEnvelope = eventEnvelopeFor(someEvent)
 
-        replace(eventStore, 'loadLatestSnapshot', fake.resolves(null))
+        replace(eventStore, 'loadSnapshot', fake.resolves(null))
         replace(eventStore, 'loadEventStreamSince', fake.resolves([someEventEnvelope]))
         replace(eventStore, 'entityReducer', function() {
           // @ts-ignore
@@ -113,7 +113,7 @@ describe('EventStore', () => {
           const eventStore = new EventStore(config, logger) as any
           const someSnapshotEnvelope = snapshotEnvelopeFor(someEntity)
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(someSnapshotEnvelope))
+          replace(eventStore, 'loadSnapshot', fake.resolves(someSnapshotEnvelope))
           replace(eventStore, 'loadEventStreamSince', fake.resolves([]))
           replace(eventStore, 'entityReducer', fake())
           replace(eventStore, 'storeSnapshot', fake())
@@ -122,7 +122,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(
             entityName,
             entityID,
@@ -143,7 +143,7 @@ describe('EventStore', () => {
           const someEventEnvelope = eventEnvelopeFor(someEvent)
           const otherEventEnvelope = eventEnvelopeFor(otherEvent)
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(someSnapshotEnvelope))
+          replace(eventStore, 'loadSnapshot', fake.resolves(someSnapshotEnvelope))
           replace(eventStore, 'loadEventStreamSince', fake.resolves([someEventEnvelope, otherEventEnvelope]))
 
           const reducer = stub()
@@ -168,7 +168,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(
             entityName,
             entityID,
@@ -221,7 +221,7 @@ describe('EventStore', () => {
             })
           )
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(someSnapshotEnvelope))
+          replace(eventStore, 'loadSnapshot', fake.resolves(someSnapshotEnvelope))
           replace(eventStore, 'loadEventStreamSince', fake.resolves(pendingEvents))
 
           const reducer = stub()
@@ -242,7 +242,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(
             entityName,
             entityID,
@@ -292,7 +292,7 @@ describe('EventStore', () => {
             })
           })
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(null))
+          replace(eventStore, 'loadSnapshot', fake.resolves(null))
           replace(eventStore, 'loadEventStreamSince', fake.resolves(pendingEvents))
 
           const reducer = stub()
@@ -313,7 +313,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(entityName, entityID, originOfTime)
 
           expect(eventStore.entityReducer.getCall(0).args[0]).to.be.null
@@ -347,7 +347,7 @@ describe('EventStore', () => {
           const otherEventEnvelope = eventEnvelopeFor(otherEvent)
           const pendingEvents = [someEventEnvelope, otherEventEnvelope]
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(null))
+          replace(eventStore, 'loadSnapshot', fake.resolves(null))
           replace(eventStore, 'loadEventStreamSince', fake.resolves(pendingEvents))
 
           const reducer = stub()
@@ -372,7 +372,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(entityName, entityID, originOfTime)
 
           expect(eventStore.entityReducer.firstCall.args[0]).to.be.null
@@ -400,7 +400,7 @@ describe('EventStore', () => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const eventStore = new EventStore(config, logger) as any
 
-          replace(eventStore, 'loadLatestSnapshot', fake.resolves(null))
+          replace(eventStore, 'loadSnapshot', fake.resolves(null))
           replace(eventStore, 'loadEventStreamSince', fake.resolves([]))
 
           replace(eventStore, 'entityReducer', fake())
@@ -410,7 +410,7 @@ describe('EventStore', () => {
           const entityID = '42'
           const entity = await eventStore.fetchEntitySnapshot(entityName, entityID)
 
-          expect(eventStore.loadLatestSnapshot).to.have.been.calledOnceWith(entityName, entityID)
+          expect(eventStore.loadSnapshot).to.have.been.calledOnceWith(entityName, entityID)
           expect(eventStore.loadEventStreamSince).to.have.been.calledOnceWith(entityName, entityID, originOfTime)
 
           expect(eventStore.entityReducer).not.to.have.been.called
@@ -441,13 +441,13 @@ describe('EventStore', () => {
       })
     })
 
-    describe('loadLatestSnapshot', () => {
-      it('looks for the latest snapshot stored in the event stream', async () => {
+    describe('loadSnapshot', () => {
+      it('looks for the latest snapshot stored in the event stream if `at` param is not passed', async () => {
         replace(config.provider.events, 'latestEntitySnapshot', fake())
 
         const entityTypeName = 'ImportantConcept'
         const entityID = '42'
-        await eventStore.loadLatestSnapshot(entityTypeName, entityID)
+        await eventStore.loadSnapshot(entityTypeName, entityID)
 
         expect(config.provider.events.latestEntitySnapshot).to.have.been.calledOnceWith(
           config,
@@ -456,10 +456,26 @@ describe('EventStore', () => {
           entityID
         )
       })
+      it('looks for a previous snapshot stored in the event stream when the `at` param is passed', async () => {
+        replace(config.provider.events, 'latestEntitySnapshot', fake())
+
+        const entityTypeName = 'ImportantConcept'
+        const entityID = '42'
+        const at = new Date()
+        await eventStore.loadSnapshot(entityTypeName, entityID, at)
+
+        expect(config.provider.events.latestEntitySnapshot).to.have.been.calledOnceWith(
+          config,
+          logger,
+          entityTypeName,
+          entityID,
+          at
+        )
+      })
     })
 
     describe('loadEventStreamSince', () => {
-      it('loads a event stream starting from a specific timestapm', async () => {
+      it('loads a event stream starting from a specific timestamp', async () => {
         replace(config.provider.events, 'forEntitySince', fake())
 
         const entityTypeName = 'ImportantConcept'
