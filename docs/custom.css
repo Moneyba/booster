@@ -1,0 +1,25 @@
+
+section.cover .cover-main > p:last-child a:last-child:hover {
+    color: white;
+    background-color: #475cf1;
+    opacity: 1;
+}
+
+section.cover.has-mask .mask {
+    opacity: 0.05;
+}
+
+section.cover .cover-main > p:last-child a {
+    background-color: #6394D6;
+    color: white;
+    border-color: #6394D6;
+    font-weight: bold;
+}
+
+section.cover .cover-main > p:last-child a:last-child {
+    border-color: var(--theme-color);
+}
+
+.sidebar > h1 {
+    max-width: 50%;
+}
