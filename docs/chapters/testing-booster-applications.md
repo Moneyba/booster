@@ -1,3 +1,5 @@
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/testing-booster-applications.md)
+
 # Testing Booster applications
 
 To properly test a Booster application, you should create a `test` folder at the same level as the `src` one. Apart from that, tests' names should have the `<my_test>.test.ts` format.
@@ -17,7 +19,7 @@ The only thing that you should add to this line are the `AWS_SDK_LOAD_CONFIG=tru
 }
 ```
 
-### Testing with `sinon-chai`
+## Testing with `sinon-chai`
 The `BoosterConfig` can be accessed through the `Booster.config` on any part of a Booster application. To properly mock it for your objective, we really recommend to use sinon `replace` method, after configuring your `Booster.config` as desired.
 
 In the example below, we add 2 "empty" read-models, since we are iterating `Booster.config.readModels` from a command handler:
@@ -56,7 +58,7 @@ public static async handle(command: MyCommand, register: Register): Promise<void
 }
 ```
 
-### Recommended files
+## Recommended files
 These are some files that might help you speed up your testing with Booster.
 
 ```typescript

@@ -1,5 +1,6 @@
-# Booster architecture
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/booster-architecture.md)
 
+# Booster architecture
 Two patterns influence the Booster's event-driven architecture: Command-Query Responsibility Segregation ([CQRS](https://www.martinfowler.com/bliki/CQRS.html)) and [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html). They're complex techniques to implement from scratch with lower-level frameworks, but Booster makes them feel natural and very easy to use.
 
 ![architecture](../img/booster-arch.png)
@@ -81,11 +82,11 @@ The generator will automatically create a file called `create-product.ts` with a
 
 Each command class must have a method called `handle`. This function is the command handler, and it will be called by the framework every time one instance of this command is submitted. Inside the handler you can run validations, return errors, query entities to make decisions, and register relevant domain events.
 
-#### Validating data
+### Validating data
 
 Booster uses the typed nature of GraphQL to ensure that types are correct before reaching the handler, so you don't have to validate types.
 
-##### Throw an error
+#### Throw an error
 
 There are still business rules to be checked before proceeding with a command. For example, a given number must be between a threshold or a string must match a regular expression. In that case, it is enough just to throw an error in the handler. Booster will use the error's message as the response to make it descriptive, e.g.
 
@@ -139,7 +140,7 @@ You'll get something like this response:
 }
 ```
 
-##### Register error events
+#### Register error events
 
 There could be situations in which you want to register an event representing an error. For example, when moving items with insufficient stock from one location to another:
 
@@ -171,7 +172,7 @@ export class MoveStock {
 
 In this case, the command operation can still be completed. An event handler will take care of that `ErrorEvent and proceed accordingly.
 
-#### Reading entities
+### Reading entities
 
 Event handlers are a good place to make decisions and, to make better decisions, you need information. There is a Booster function called `fetchEntitySnapshots` within the `Booster` package and allows you to inspect the application state. This function receives two arguments, the `Entity` to fetch and the `entityID`. Here is an example of fetching an entity called `Stock`:
 
@@ -201,7 +202,7 @@ export class MoveStock {
 }
 ```
 
-#### Registering events
+### Registering events
 
 Within the command handler execution, it is possible to register domain events. The command handler function receives the `register` argument, so within the handler, it is possible to call `register.events(...)` with a list of events. For more details about events and the register parameter, see the [`Events`](#2-events) section.
 
@@ -355,7 +356,7 @@ Creating an event file is different than storing an event instance in the event 
 
 Booster injects the register as a parameter in the `handle` method of both the command and the event handlers. Then you can register events by calling the `register.events(...)` method as many times as you want, e.g.
 
-#### Registering events from command handlers
+### Registering events from command handlers
 
 ```typescript
 @Command({
@@ -377,7 +378,7 @@ export class MoveStock {
 }
 ```
 
-#### Registering events from event handlers
+### Registering events from event handlers
 
 In the case of the event handlers, you also receive the event instance that triggered the handle function.
 
@@ -712,7 +713,7 @@ For more information about queries and how to use them, please check the [GraphQ
 
 Booster GraphQL API also provides support for real-time updates using subscriptions and a web-socket. To get more information about it go to the [GraphQL API](#subscribing-to-read-models) section.
 
-#### Filtering a read model
+### Filtering a read model
 
 The Booster GraphQL API provides support for filtering Read Models on queries, subscriptions and at code level.
 
@@ -731,11 +732,11 @@ query {
 }
 ```
 
-#### Supported filters
+### Supported filters
 
 The currently supported filters are the following ones:
 
-##### Boolean filters
+#### Boolean filters
 
 | Filter |   Value    |  Description |
 | :----- | :--------: | -----------: |
@@ -755,7 +756,7 @@ query {
 }
 ```
 
-##### Number filters
+#### Number filters
 
 | Filter |  Value  |           Description |
 | :----- | :-----: | --------------------: |
@@ -780,7 +781,7 @@ query {
 }
 ```
 
-##### String filters
+#### String filters
 
 | Filter     |  Value   |                Description |
 | :--------- | :------: | -------------------------: |
@@ -807,7 +808,7 @@ query {
 }
 ```
 
-##### Array filters
+#### Array filters
 
 | Filter   | Value  |             Description |
 | :------- | :----: | ----------------------: |
@@ -827,7 +828,7 @@ query {
 
 _Note: Right now there is a limitation with complex properties in Arrays, where you just can filter them if you know the exact value of an element but is not possible to filter from a property of the element. As a workaround, you can use an array of ids of the complex property and filter for that property as in the example above._
 
-##### Filter combinators
+#### Filter combinators
 
 All the filters can be combined to create a more complex search on the same properties of the ReadModel.
 

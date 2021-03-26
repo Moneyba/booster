@@ -1,7 +1,7 @@
 
 section.cover .cover-main > p:last-child a:last-child:hover {
     color: white;
-    background-color: #475cf1;
+    background-color: #5A6FFF;
     opacity: 1;
 }
 
@@ -10,9 +10,9 @@ section.cover.has-mask .mask {
 }
 
 section.cover .cover-main > p:last-child a {
-    background-color: #6394D6;
+    background-color: #3D52E4;
     color: white;
-    border-color: #6394D6;
+    border-color: #3D52E4;
     font-weight: bold;
 }
 
@@ -23,3 +23,22 @@ section.cover .cover-main > p:last-child a:last-child {
 .sidebar > h1 {
     max-width: 50%;
 }
+
+
+#navbar {
+    font-size: 18px;
+    line-height: 42px;
+    font-style: italic;
+}
+
+
+/*
+.sidebar-toggle {
+    bottom: unset;
+}
+
+.sidebar {
+    padding-top: 40px !important;
+}*/
+
+

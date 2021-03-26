@@ -1,4 +1,4 @@
-# Features
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/features.md)
 
 ## Authentication and Authorization
 
@@ -91,7 +91,7 @@ authorize them to access protected resources.
 
 To learn how to include the access token in your requests, check the section [Authorizing operations](#authorizing-operations).
 
-## Custom Authentication
+### Custom Authentication
 
 You can use the **JWT authorization mode** to authorize all incoming Booster requests. Your auth server will return JWT tokens
 wich will be decoded internally by Booster, after that, the required roles will be matched with the contained claims
@@ -566,7 +566,7 @@ Authorization: Bearer <your token>
 
 You normally won't be sending tokens in such a low-level way. GraphQL clients have easier ways to send these tokens. See [Sending tokens with Apollo client](#sending-tokens-with-apollo-clients)
 
-#### Sending tokens with Apollo clients
+### Sending tokens with Apollo clients
 
 We recommend going to the specific documentation of the specific Apollo client you are using to know how to send tokens. However, the basics of this guide remains the same. Here is an example of how you would configure the Javascript/Typescript Apollo client to send the authorization token. The example is exactly the same as the one shown in the [Using Apollo clients](#using-apollo-client) section, but with the changes needed to send the token. Notice that `<AuthApiEndpoint>` and `<idToken>` are obtained from the [Authentication Rocket](https://github.com/boostercloud/rocket-auth-aws-infrastructure).
 
@@ -619,7 +619,7 @@ const client = new ApolloClient({
 })
 ```
 
-#### Refreshing tokens with Apollo clients
+### Refreshing tokens with Apollo clients
 
 Authorization tokens expire after a certain amount of time. When a token is expired, you will get an error and you will need to call the [refresh the token](https://github.com/boostercloud/rocket-auth-aws-infrastructure#refresh-token) endpoint to get a new token. After you have done so, you need to use the new token in your GraphQL operations.
 
@@ -708,7 +708,7 @@ all cloud providers. (**Contributions are welcome!** 😜)
 
 ### Configure your provider credentials
 
-#### AWS provider
+### AWS provider
 
 In AWS, it is required that your `~/.aws/credentials` file is properly setup, and a `region` attribute is specified. If you have the [AWS CLI installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html), you can create the config file by running the command `aws configure`, but that is completely optional, **AWS CLI is not required to run booster**.
 

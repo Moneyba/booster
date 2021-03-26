@@ -1,9 +1,4 @@
-# Going deeper with Booster
-
-## Contributing
-
-If you want to start making contributions to Booster, we strongly recommend that you read our [contributing guide](https://github.com/boostercloud/booster/blob/main/CONTRIBUTING.md).
-
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/going-deeper.md)
 ## Booster examples
 
 You can find some example apps in the [examples directory](https://github.com/boostercloud/booster/tree/main/docs/examples) and in this [repository](https://github.com/boostercloud/examples).

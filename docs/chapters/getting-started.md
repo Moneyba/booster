@@ -1,5 +1,4 @@
-📝[Edit Document](https://github.com/Moneyba/booster/blob/main/docs/chapters/getting-started.md)
-# Getting started
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/getting-started.md)
 
 ## Installing Booster
 
@@ -18,6 +17,7 @@ The minimal required Node.js version is `v12`. Download the installer
 manager.
 
 ##### Ubuntu
+You just need to launch a terminal and type these two command lines: 
 
 ```shell
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
@@ -25,13 +25,13 @@ sudo apt install nodejs
 ```
 
 ##### macOS
-
+Install the [Homebrew](https://brew.sh) package manager, if you don't have it. Then, install Node.js by typing this command line on Terminal:
 ```shell
 brew install node
 ```
 
 ##### Windows
-
+You can use the [Chocolatey](https://chocolatey.org/) package manager. After installing it, open the Admin Windows Powershell and type:
 ```shell
 choco install nodejs
 ```

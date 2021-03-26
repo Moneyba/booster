@@ -1,3 +1,5 @@
+📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/CONTRIBUTING.md)
+
 # Documentation principles and practices
 
 The ultimate goal of a technical document is to translate the knowledge from the technology creators into the reader's mind so that they learn. The challenging 
