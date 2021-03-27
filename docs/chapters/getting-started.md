@@ -25,7 +25,7 @@ sudo apt install nodejs
 ```
 
 ##### macOS
-Install the [Homebrew](https://brew.sh) package manager, if you don't have it. Then, install Node.js by typing this command line on Terminal:
+Install the [Homebrew](https://brew.sh) package manager, in case you don't already have it. Then, install Node.js by typing this command line on Terminal:
 ```shell
 brew install node
 ```
