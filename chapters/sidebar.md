@@ -1,7 +1,0 @@
-- [Introduction](Documents/Projects/moneyba.github.io/chapters/introduction.md)
-- [Getting started](Documents/Projects/moneyba.github.io/chapters/getting-started.md)
-- [Booster architecture](Documents/Projects/moneyba.github.io/chapters/booster-architecture.md)
-- [Features](Documents/Projects/moneyba.github.io/chapters/features.md)
-- [Testing Booster applications](Documents/Projects/moneyba.github.io/chapters/testing-booster-applications.md)
-- [Going deeper with Booster](Documents/Projects/moneyba.github.io/chapters/going-deeper.md)
-- [Contributing Guide](Documents/Projects/moneyba.github.io/main/CONTRIBUTING.md)

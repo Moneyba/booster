@@ -1,1 +1,0 @@
-[Booster Framework](https://framework.booster.cloud/)
