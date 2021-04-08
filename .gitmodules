@@ -1,0 +1,4 @@
+[submodule "docs/root_file"]
+	path = docs/root_file
+	url = https://github.com/Moneyba/booster.git
+	branch = main
