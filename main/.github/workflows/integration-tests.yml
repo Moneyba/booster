@@ -1,0 +1,100 @@
+name: Integration
+on:
+  pull_request:
+    types: [locked] # All integration tests are run every time the PR is locked
+
+jobs:
+  aws-deploy-integration-tests:
+    name: AWS Deployment Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/aws-deploy --stream
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BOT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BOT_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+
+  aws-func-integration-tests:
+    name: AWS Functionality Integration Tests
+    needs:
+      - aws-deploy-integration-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/aws-func --stream
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BOT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BOT_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+
+  end-to-end-tests:
+    name: End-to-end Tests
+    needs:
+      - aws-func-integration-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/end-to-end --stream
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BOT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BOT_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+
+  aws-nuke-integration-tests:
+    name: AWS Nuke Integration Tests
+    needs:
+      - aws-func-integration-tests
+      - end-to-end-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/aws-nuke --stream
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BOT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BOT_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+
+  cli-integration-tests:
+    name: CLI Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/cli --stream
+
+  local-integration-tests:
+    name: Local Environment Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npx lerna bootstrap
+      - run: npx lerna run compile
+      - run: npx lerna run integration/local --stream
