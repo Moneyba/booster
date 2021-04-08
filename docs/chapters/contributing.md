@@ -1,0 +1,1 @@
+[remoteMarkdownUrl](https://raw.githubusercontent.com/Moneyba/booster/main/CONTRIBUTING.md)
