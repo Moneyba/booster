@@ -4,4 +4,4 @@
 - [Features](chapters/features.md)
 - [Testing Booster applications](chapters/testing-booster-applications.md)
 - [Going deeper with Booster](chapters/going-deeper.md)
-- [Contributing Guide](chapters/CONTRIBUTING.md)
+- [Contributing Guide](main/CONTRIBUTING.md)
