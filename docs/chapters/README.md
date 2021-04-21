@@ -1,5 +1,3 @@
-📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/README.md)
-
 ## booster framework
 > The easiest way to develop backends.
 

@@ -1,5 +1,3 @@
-📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/features.md)
-
 ## Authentication and Authorization
 
 You can use the [Authentication Rocket](https://github.com/boostercloud/rocket-auth-aws-infrastructure) for adding the authentication and authorization to you application. But first, you need to know that authorization in Booster is done through roles. Every Command and ReadModel has an `authorize` policy that tells Booster who can execute or access it. It consists of one of the following two values:

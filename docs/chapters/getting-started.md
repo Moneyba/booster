@@ -1,5 +1,3 @@
-📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/getting-started.md)
-
 ## Installing Booster
 
 You can develop with Booster using any of the following operating systems:

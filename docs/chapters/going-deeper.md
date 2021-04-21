@@ -1,4 +1,3 @@
-📝[Edit on github](https://github.com/Moneyba/booster/blob/main/docs/chapters/going-deeper.md)
 ## Booster examples
 
 You can find some example apps in the [examples directory](https://github.com/boostercloud/booster/tree/main/docs/examples) and in this [repository](https://github.com/boostercloud/examples).

@@ -1,25 +1,4 @@
 
-section.cover .cover-main > p:last-child a:last-child:hover {
-    color: white;
-    background-color: #7a8bff;
-    opacity: 1;
-}
-
-section.cover.has-mask .mask {
-    opacity: 0.05;
-}
-
-section.cover .cover-main > p:last-child a {
-    background-color: #3D52E4;
-    color: white;
-    border-color: #3D52E4;
-    font-weight: bold;
-}
-
-section.cover .cover-main > p:last-child a:last-child {
-    border-color: var(--theme-color);
-}
-
 .sidebar > h1 {
     max-width: 50%;
 }
@@ -32,13 +11,27 @@ section.cover .cover-main > p:last-child a:last-child {
 }
 
 
-/*
+
 .sidebar-toggle {
     bottom: unset;
 }
 
 .sidebar {
     padding-top: 40px !important;
-}*/
+}
 
 
+@media screen and (min-width: 768px) {
+    .sidebar-toggle-button {
+        display: none;
+    }
+
+    body .content {
+        transform: translateX(300px);
+    }
+
+    body.close .sidebar {
+        transform: translateX(0);
+    }
+
+}
